@@ -1,82 +1,171 @@
-# Tidjee's Symfony Template ![Work in progress](https://img.shields.io/badge/Work%20in%20Progress-red.svg)
+# Kanban API 🚀
 
-![GitHub stars](https://img.shields.io/github/stars/tidjee-dev/symfony-template?style=) [![GitHub last commit](https://img.shields.io/github/last-commit/tidjee-dev/symfony-template)](https://github.com/tidjee-dev/symfony-template/commits/main) [![GitHub issues](https://img.shields.io/github/issues/tidjee-dev/symfony-template)](https://github.com/tidjee-dev/symfony-template/issues) [![GitHub forks](https://img.shields.io/github/forks/tidjee-dev/symfony-template?style)](https://github.com/tidjee-dev/symfony-template/fork) ![GitHub repo size](https://img.shields.io/github/repo-size/tidjee-dev/symfony-template) [![Use this template](https://img.shields.io/badge/Use%20this%20template-blueviolet?logo=github)](https://github.com/tidjee-dev/symfony-template/generate)
+A Symfony-based API for creating and managing a Kanban system. This API lets you manage boards, lists (columns), and tasks, and includes user authentication with JWT.
 
-## 📝 Description
+## Features ✨
 
-This repository is a boilerplate for quickly setting up a new Symfony project with a ready-to-use configuration in dev environment.
+- **User Management 👤**: Secure user registration, login, and profile management.
+- **Kanban Boards 📋**: Create, view, update, and delete boards.
+- **Dynamic Lists 📝**: Organize boards with customizable lists (columns).
+- **Task Management ✅**: Add, update, move, and delete tasks across lists.
+- **JWT Authentication 🔐**: Secure API endpoints with token-based authentication.
+- **MySQL Database 💾**: Robust data storage with Doctrine ORM.
 
-> [!WARNING]
-> This template is for development purposes only (for now).
-> It is not intended for production use.
+## Usage 🚀
 
-It provides:
+1. **User Registration & Login**
 
-✅ An **Apache web server**
+   - **Register**: `POST /api/users/register`
+   - **Login**: `POST /api/users/login` (Receive a JWT token)
 
-✅ Support for **PostgreSQL** and **MySQL** databases
+2. **Manage Boards**
 
-✅ Database management tools: **PHPMyAdmin** or **pgAdmin**
+   - **Create Board**: `POST /api/boards`
+   - **List Boards**: `GET /api/boards`
+   - **Get Board Details**: `GET /api/boards/{id}`
+   - **Update Board**: `PUT /api/boards/{id}`
+   - **Delete Board**: `DELETE /api/boards/{id}`
 
-✅ **Mailpit** as fake SMTP server
+3. **Manage Lists (Columns)**
 
-✅ A **Docker** environment for easy setup
+   - **Create List**: `POST /api/lists`
+   - **List Lists for a Board**: `GET /api/boards/{boardId}/lists`
+   - **Update List**: `PUT /api/lists/{id}`
+   - **Delete List**: `DELETE /api/lists/{id}`
 
-✅ **Castor** as a task runner
+4. **Manage Tasks**
 
-## 🚀 Tech Stack
+   - **Create Task**: `POST /api/tasks`
+   - **List Tasks for a List**: `GET /api/lists/{listId}/tasks`
+   - **Move Task**: `PATCH /api/tasks/{id}/move`
+   - **Update Task**: `PUT /api/tasks/{id}`
+   - **Delete Task**: `DELETE /api/tasks/{id}`
 
-- **Languages & Database**
+## API Endpoints 🌐
 
-  [![PHP](https://img.shields.io/badge/PHP-8.4.x-777BB4?logo=php)](https://www.php.net/) [![MySQL](https://img.shields.io/badge/MySQL-latest-4479A1?logo=mysql)](https://www.mysql.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-latest-316192?logo=postgresql)](https://www.postgresql.org/)
+### `Users` 👤
 
-- **Frameworks**
+| Method | Endpoint            | Description              |
+| ------ | ------------------- | ------------------------ |
+| POST   | /api/users/register | Register a new user      |
+| POST   | /api/users/login    | Login and obtain a JWT   |
+| GET    | /api/users/me       | Get current user details |
+| PUT    | /api/users/{id}     | Update user information  |
+| DELETE | /api/users/{id}     | Delete a user            |
 
-  [![Symfony](https://img.shields.io/badge/Symfony-7.x-000?logo=symfony)](https://symfony.com/)
+### `Boards` 📋
 
-- **Web Server**
+| Method | Endpoint         | Description        |
+| ------ | ---------------- | ------------------ |
+| GET    | /api/boards      | List all boards    |
+| POST   | /api/boards      | Create a new board |
+| GET    | /api/boards/{id} | Get board details  |
+| PUT    | /api/boards/{id} | Update board       |
+| DELETE | /api/boards/{id} | Delete board       |
 
-  [![Apache](<https://img.shields.io/badge/Apache-latest_(2.4)-D42029?logo=apache>)](https://httpd.apache.org/)
+### `Lists` 📝
 
-- **Mail Server**
+| Method | Endpoint                    | Description                |
+| ------ | --------------------------- | -------------------------- |
+| POST   | /api/lists                  | Create a new list          |
+| GET    | /api/boards/{boardId}/lists | List all lists for a board |
+| PUT    | /api/lists/{id}             | Update a list              |
+| DELETE | /api/lists/{id}             | Delete a list              |
 
-  [![Mailpit](https://img.shields.io/badge/Mailpit-latest-000)](https://mailpit.axllent.org/)
+### `Tasks` ✅
 
-- **Tools**
+| Method | Endpoint                  | Description                     |
+| ------ | ------------------------- | ------------------------------- |
+| POST   | /api/tasks                | Create a new task               |
+| GET    | /api/lists/{listId}/tasks | List tasks for a given list     |
+| PATCH  | /api/tasks/{id}/move      | Move a task to a different list |
+| PUT    | /api/tasks/{id}           | Update task details             |
+| DELETE | /api/tasks/{id}           | Delete a task                   |
 
-  [![Castor](https://img.shields.io/badge/Castor-latest-000)](https://castor.jolicode.com/) [![Docker](https://img.shields.io/badge/Docker-latest-0db7ed?logo=docker)](https://docs.docker.com/) [![PHPMyAdmin](https://img.shields.io/badge/PHPMyAdmin-latest-4479A1?logo=phpmyadmin)](https://www.phpmyadmin.net/) [![pgAdmin](https://img.shields.io/badge/pgAdmin-latest-000)](https://www.pgadmin.org/)
+## Data Model 🗺
 
-## 📌 Requirements
+```mermaid
+erDiagram
+    USERS {
+      string id
+      string username
+      string password
+      datetime created_at
+      datetime updated_at
+    }
+    BOARDS {
+      string id
+      string name
+      string description
+      string owner_id
+      datetime created_at
+      datetime updated_at
+    }
+    KANBAN_LISTS {
+      string id
+      string board_id
+      string title
+      int position
+      datetime created_at
+      datetime updated_at
+    }
+    TASKS {
+      string id
+      string list_id
+      string title
+      string description
+      int position
+      datetime created_at
+      datetime updated_at
+    }
 
-Before using this template, ensure you have:
+    USERS ||--o{ BOARDS : "owns"
+    BOARDS ||--|{ KANBAN_LISTS : "has"
+    KANBAN_LISTS ||--|{ TASKS : "contains"
+```
 
-- [PHP](https://www.php.net/) installed
-- [Castor](https://castor.jolicode.com/installation) installed
-- [Docker](https://docs.docker.com/engine/install/) & [Docker Compose](https://docs.docker.com/compose/)
+## Key Entities 🔑
 
-## 🛠️ How to Use
+- 👤 **Users**: Registered users for the Kanban system
 
-1. **Create** a new Symfony project using this template
-   ![use this template](/docs/template/assets/image.png)
-2. **Clone** your newly created repository
-3. **Initialize the project** with:
+  | Column     | Type     | Nullable | Description        |
+  | ---------- | -------- | -------- | ------------------ |
+  | id         | STRING   | NO       | Primary key        |
+  | username   | STRING   | NO       | Unique username    |
+  | password   | STRING   | NO       | Encrypted password |
+  | created_at | DATETIME | NO       | Creation date      |
+  | updated_at | DATETIME | YES      | Last update date   |
 
-   ```sh
-   castor project:init
-   ```
+- 📋 **Boards**: Kanban boards for organizing lists and tasks
 
-4. **Adapt the Docker configuration** to your needs
+  | Column      | Type     | Nullable | Description           |
+  | ----------- | -------- | -------- | --------------------- |
+  | id          | STRING   | NO       | Primary key           |
+  | name        | STRING   | NO       | Board name            |
+  | description | TEXT     | YES      | Board description     |
+  | owner_id    | STRING   | NO       | ID of the board owner |
+  | created_at  | DATETIME | NO       | Creation date         |
+  | updated_at  | DATETIME | YES      | Last update date      |
 
-   Follow the instructions in the `compose.yml` file to configure the Docker environment.
+- 📝 **Kanban Lists**: Columns within a board
 
-5. **Start the Docker Stack** with:
+  | Column     | Type     | Nullable | Description                 |
+  | ---------- | -------- | -------- | --------------------------- |
+  | id         | STRING   | NO       | Primary key                 |
+  | board_id   | STRING   | NO       | Associated board ID         |
+  | title      | STRING   | NO       | List title                  |
+  | position   | INT      | NO       | Order position in the board |
+  | created_at | DATETIME | NO       | Creation date               |
+  | updated_at | DATETIME | YES      | Last update date            |
 
-   ```sh
-   castor docker:start
-   ```
+- ✅ **Tasks**: Tasks that are assigned to lists
 
-## 🤝 Contributing
-
-If you have any suggestions or find any issues, please [open an issue](https://github.com/tidjee-dev/symfony-template/issues/new).
-
-## 🎉 Happy Coding! 🚀
+  | Column      | Type     | Nullable | Description                    |
+  | ----------- | -------- | -------- | ------------------------------ |
+  | id          | STRING   | NO       | Primary key                    |
+  | list_id     | STRING   | NO       | Associated list ID             |
+  | title       | STRING   | NO       | Task title                     |
+  | description | TEXT     | YES      | Task details                   |
+  | position    | INT      | NO       | Order position within the list |
+  | created_at  | DATETIME | NO       | Creation date                  |
+  | updated_at  | DATETIME | YES      | Last update date               |
