@@ -92,6 +92,7 @@ erDiagram
       string email
       string password
       array roles
+      bool is_active
       datetime created_at
       datetime updated_at
     }
