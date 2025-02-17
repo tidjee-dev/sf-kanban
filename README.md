@@ -89,7 +89,9 @@ erDiagram
     USERS {
       string id
       string username
+      string email
       string password
+      array roles
       datetime created_at
       datetime updated_at
     }
@@ -132,7 +134,10 @@ erDiagram
   | ---------- | -------- | -------- | ------------------ |
   | id         | STRING   | NO       | Primary key        |
   | username   | STRING   | NO       | Unique username    |
+  | email      | STRING   | NO       | User email         |
   | password   | STRING   | NO       | Encrypted password |
+  | roles      | ARRAY    | NO       | User roles         |
+  | isActive   | BOOLEAN  | NO       | User status        |
   | created_at | DATETIME | NO       | Creation date      |
   | updated_at | DATETIME | YES      | Last update date   |
 
