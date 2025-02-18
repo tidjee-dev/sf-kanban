@@ -34,7 +34,7 @@ services:
   #? - Update the .env.docker file with the correct values.                     #
   #_===========================================================================_#
   mysql:
-    image: mysql
+    image: mysql:8
     container_name: ${PROJECT_NAME}-mysql
     restart: unless-stopped
     ports:
