@@ -2,24 +2,26 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ListsRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\TasksRepository;
 
-#[ORM\Entity(repositoryClass: ListsRepository::class)]
-class Lists
+#[ORM\Entity(repositoryClass: TasksRepository::class)]
+class Tasks
 {
     #[ORM\Id]
     #[ORM\Column(length: 22)]
     private ?string $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lists')]
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Boards $board = null;
+    private ?Lists $list = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column]
     private ?int $position = null;
@@ -33,12 +35,6 @@ class Lists
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    /**
-     * @var Collection<int, Tasks>
-     */
-    #[ORM\OneToMany(targetEntity: Tasks::class, mappedBy: 'list', orphanRemoval: true)]
-    private Collection $tasks;
-
     public function __toString(): string
     {
         return $this->title;
@@ -49,7 +45,6 @@ class Lists
         $this->position = 0;
         $this->isCompleted = false;
         $this->created_at = new \DateTimeImmutable();
-        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -64,14 +59,14 @@ class Lists
         return $this;
     }
 
-    public function getBoard(): ?Boards
+    public function getList(): ?Lists
     {
-        return $this->board;
+        return $this->list;
     }
 
-    public function setBoard(?Boards $board): static
+    public function setList(?Lists $list): static
     {
-        $this->board = $board;
+        $this->list = $list;
 
         return $this;
     }
@@ -84,6 +79,18 @@ class Lists
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -132,36 +139,6 @@ class Lists
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tasks>
-     */
-    public function getTasks(): Collection
-    {
-        return $this->tasks;
-    }
-
-    public function addTask(Tasks $task): static
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks->add($task);
-            $task->setList($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Tasks $task): static
-    {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getList() === $this) {
-                $task->setList(null);
-            }
-        }
 
         return $this;
     }
