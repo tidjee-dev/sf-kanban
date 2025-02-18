@@ -18,7 +18,7 @@ class UsersDTO
     string $username,
     string $email,
     string $password,
-    string $roles,
+    array $roles,
     bool $is_active,
     \DateTimeImmutable $created_at,
     ?\DateTimeImmutable $updated_at
