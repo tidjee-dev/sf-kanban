@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BoardsRepository;
@@ -29,6 +31,12 @@ class Boards
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
+    /**
+     * @var Collection<int, Lists>
+     */
+    #[ORM\OneToMany(targetEntity: Lists::class, mappedBy: 'board', orphanRemoval: true)]
+    private Collection $lists;
+
     public function __toString(): string
     {
         return $this->name;
@@ -37,6 +45,7 @@ class Boards
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
+        $this->lists = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -107,6 +116,36 @@ class Boards
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lists>
+     */
+    public function getLists(): Collection
+    {
+        return $this->lists;
+    }
+
+    public function addList(Lists $list): static
+    {
+        if (!$this->lists->contains($list)) {
+            $this->lists->add($list);
+            $list->setBoard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeList(Lists $list): static
+    {
+        if ($this->lists->removeElement($list)) {
+            // set the owning side to null (unless already changed)
+            if ($list->getBoard() === $this) {
+                $list->setBoard(null);
+            }
+        }
 
         return $this;
     }
