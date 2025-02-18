@@ -19,7 +19,7 @@ class UsersService
   {
     $users = $this->usersRepository->findAll();
 
-    if (!$users) {
+    if (empty($users)) {
       return [
         'status' => [
           'code' => 404,
@@ -51,7 +51,7 @@ class UsersService
   {
     $user = $this->usersRepository->find($id);
 
-    if (!$user) {
+    if (empty($user)) {
       throw new \Exception("User not found.");
     }
 
@@ -111,7 +111,7 @@ class UsersService
   ): UsersDTO {
     $user = $this->usersRepository->find($id);
 
-    if (!$user) {
+    if (empty($user)) {
       throw new \Exception("User not found.");
     }
 
@@ -142,7 +142,7 @@ class UsersService
   {
     $user = $this->usersRepository->find($id);
 
-    if (!$user) {
+    if (empty($user)) {
       throw new \Exception("User not found.");
     }
 

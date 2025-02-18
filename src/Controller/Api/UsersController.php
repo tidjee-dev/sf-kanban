@@ -16,14 +16,14 @@ class UsersController extends AbstractController
   #[Route('/', name: 'index', methods: ['GET'])]
   public function index(): JsonResponse
   {
-    if (!$this->isGranted('ROLE_ADMIN')) {
-      return $this->json([
-        'status' => [
-          'code' => 401,
-          'message' => 'Unauthorized'
-        ]
-      ], JsonResponse::HTTP_UNAUTHORIZED);
-    }
+    // if (!$this->isGranted('ROLE_ADMIN')) {
+    //   return $this->json([
+    //     'status' => [
+    //       'code' => 401,
+    //       'message' => 'Unauthorized'
+    //     ]
+    //   ], JsonResponse::HTTP_UNAUTHORIZED);
+    // }
 
     try {
       $users = $this->usersService->index();
@@ -45,18 +45,17 @@ class UsersController extends AbstractController
     ]);
   }
 
-  // /{id} but not /me
-  #[Route('/{id}', requirements: ['id' => '\d+'], name: 'show', methods: ['GET'])]
+  #[Route('/{id}', requirements: ['id' => '^USR-[0-9]{10}-[0-9]{4}$'], name: 'show', methods: ['GET'])]
   public function show(string $id): JsonResponse
   {
-    if (!$this->isGranted('ROLE_ADMIN')) {
-      return $this->json([
-        'status' => [
-          'code' => 401,
-          'message' => 'Unauthorized'
-        ]
-      ], JsonResponse::HTTP_UNAUTHORIZED);
-    }
+    // if (!$this->isGranted('ROLE_ADMIN')) {
+    //   return $this->json([
+    //     'status' => [
+    //       'code' => 401,
+    //       'message' => 'Unauthorized'
+    //     ]
+    //   ], JsonResponse::HTTP_UNAUTHORIZED);
+    // }
 
     try {
       $user = $this->usersService->show($id);
@@ -83,7 +82,7 @@ class UsersController extends AbstractController
   {
     $user = $this->getUser();
 
-    if (!$user) {
+    if (empty($user)) {
       return $this->json([
         'status' => [
           'code' => 401,
