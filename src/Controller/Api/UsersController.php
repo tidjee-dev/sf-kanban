@@ -16,6 +16,15 @@ class UsersController extends AbstractController
   #[Route('/', name: 'index', methods: ['GET'])]
   public function index(): JsonResponse
   {
+    if (!$this->isGranted('ROLE_ADMIN')) {
+      return $this->json([
+        'status' => [
+          'code' => 401,
+          'message' => 'Unauthorized'
+        ]
+      ], JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
     try {
       $users = $this->usersService->index();
     } catch (\Exception $e) {
@@ -36,9 +45,19 @@ class UsersController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}', name: 'show', methods: ['GET'])]
+  // /{id} but not /me
+  #[Route('/{id}', requirements: ['id' => '\d+'], name: 'show', methods: ['GET'])]
   public function show(string $id): JsonResponse
   {
+    if (!$this->isGranted('ROLE_ADMIN')) {
+      return $this->json([
+        'status' => [
+          'code' => 401,
+          'message' => 'Unauthorized'
+        ]
+      ], JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
     try {
       $user = $this->usersService->show($id);
 
@@ -59,36 +78,59 @@ class UsersController extends AbstractController
     }
   }
 
-  #[Route('/', name: 'create', methods: ['POST'])]
-  public function create(Request $request): JsonResponse
+  #[Route('/me', name: 'me', methods: ['GET'])]
+  public function me(): JsonResponse
   {
-    $data = json_decode($request->getContent(), true);
+    $user = $this->getUser();
 
-    try {
-      $user = $this->usersService->create(
-        $data['username'],
-        $data['email'],
-        $data['password'],
-        $data['roles'] ?? [],
-        $data['isActive'] ?? false
-      );
-
+    if (!$user) {
       return $this->json([
         'status' => [
-          'code' => 201,
-          'message' => "User `{$user->username}` created successfully"
-        ],
-        'user' => $user
-      ], JsonResponse::HTTP_CREATED);
-    } catch (\Exception $e) {
-      return $this->json([
-        'status' => [
-          'code' => 400,
-          'message' => $e->getMessage()
+          'code' => 401,
+          'message' => 'Unauthorized or not logged in'
         ]
-      ], JsonResponse::HTTP_BAD_REQUEST);
+      ], JsonResponse::HTTP_UNAUTHORIZED);
     }
+
+    return $this->json([
+      'status' => [
+        'code' => 200,
+        'message' => "User `{$user->username}` retrieved successfully"
+      ],
+      'user' => $user
+    ]);
   }
+
+  // #[Route('/', name: 'create', methods: ['POST'])]
+  // public function create(Request $request): JsonResponse
+  // {
+  //   $data = json_decode($request->getContent(), true);
+
+  //   try {
+  //     $user = $this->usersService->create(
+  //       $data['username'],
+  //       $data['email'],
+  //       $data['password'],
+  //       $data['roles'] ?? [],
+  //       $data['isActive'] ?? false
+  //     );
+
+  //     return $this->json([
+  //       'status' => [
+  //         'code' => 201,
+  //         'message' => "User `{$user->username}` created successfully"
+  //       ],
+  //       'user' => $user
+  //     ], JsonResponse::HTTP_CREATED);
+  //   } catch (\Exception $e) {
+  //     return $this->json([
+  //       'status' => [
+  //         'code' => 400,
+  //         'message' => $e->getMessage()
+  //       ]
+  //     ], JsonResponse::HTTP_BAD_REQUEST);
+  //   }
+  // }
 
   #[Route('/{id}', name: 'update', methods: ['PUT'])]
   public function update(string $id, Request $request): JsonResponse
