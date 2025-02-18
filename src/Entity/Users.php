@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,7 +14,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(length: 22)]
     private ?string $id = null;
 
@@ -43,10 +44,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
+    /**
+     * @var Collection<int, Boards>
+     */
+    #[ORM\OneToMany(targetEntity: Boards::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $boards;
+
     public function __construct()
     {
         $this->isActive = false;
         $this->created_at = new \DateTimeImmutable();
+        $this->boards = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -175,6 +183,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Boards>
+     */
+    public function getBoards(): Collection
+    {
+        return $this->boards;
+    }
+
+    public function addBoard(Boards $board): static
+    {
+        if (!$this->boards->contains($board)) {
+            $this->boards->add($board);
+            $board->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoard(Boards $board): static
+    {
+        if ($this->boards->removeElement($board)) {
+            // set the owning side to null (unless already changed)
+            if ($board->getOwner() === $this) {
+                $board->setOwner(null);
+            }
+        }
 
         return $this;
     }
