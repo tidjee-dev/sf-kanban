@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/boards', name: 'boards', methods: ['GET'])]
+#[Route('/api/boards', name: 'api_boards_')]
 class BoardsController extends AbstractController
 {
   public function __construct(
