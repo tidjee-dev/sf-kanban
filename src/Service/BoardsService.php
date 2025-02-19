@@ -5,7 +5,6 @@ namespace App\Service;
 use App\DTO\BoardsDTO;
 use App\Entity\Boards;
 use App\Repository\BoardsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 class BoardsService
 {
