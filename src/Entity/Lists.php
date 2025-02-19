@@ -21,7 +21,7 @@ class Lists
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $position = null;
 
     #[ORM\Column]

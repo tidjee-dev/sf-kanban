@@ -5,7 +5,7 @@ namespace App\DTO;
 class ListsDTO
 {
   public string $id;
-  public string $board_id;
+  public array $board_id;
   public string $title;
   public string $position;
   public \DateTimeImmutable $created_at;
@@ -13,7 +13,7 @@ class ListsDTO
 
   public function __construct(
     string $id,
-    string $board_id,
+    array $board_id,
     string $title,
     string $position,
     \DateTimeImmutable $created_at,
