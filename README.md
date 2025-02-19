@@ -166,7 +166,7 @@ erDiagram
   | id          | STRING   | NO       | Primary key                 |
   | board_id    | STRING   | NO       | Associated board ID         |
   | title       | STRING   | NO       | List title                  |
-  | position    | INT      | NO       | Order position in the board |
+  | position    | INT      | YES      | Order position in the board |
   | isCompleted | BOOLEAN  | NO       | List completion status      |
   | created_at  | DATETIME | NO       | Creation date               |
   | updated_at  | DATETIME | YES      | Last update date            |
@@ -181,7 +181,7 @@ erDiagram
   | list_id     | STRING   | NO       | Associated list ID             |
   | title       | STRING   | NO       | Task title                     |
   | description | TEXT     | YES      | Task details                   |
-  | position    | INT      | NO       | Order position within the list |
+  | position    | INT      | YES      | Order position within the list |
   | isCompleted | BOOLEAN  | NO       | Task completion status         |
   | created_at  | DATETIME | NO       | Creation date                  |
   | updated_at  | DATETIME | YES      | Last update date               |
