@@ -17,15 +17,8 @@ class ListsService
   {
     $lists = $this->listsRepository->getListsByBoardId($boardId);
 
-    // dd($lists);
-
     if (empty($lists)) {
-      return [
-        'status' => [
-          'code' => 404,
-          'message' => 'Lists not found'
-        ]
-      ];
+      throw new \Exception('No lists found for the given board ID');
     }
 
     $listsDTO = [];
