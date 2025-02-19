@@ -29,14 +29,14 @@ A Symfony-based API for creating and managing a Kanban system. This API lets you
 3. **Manage Lists (Columns)**
 
    - **Create List**: `POST /api/lists`
-   - **List Lists for a Board**: `GET /api/boards/{boardId}/lists`
+   - **List Lists for a Board**: `GET /api/lists/boards/{boardId}`
    - **Update List**: `PUT /api/lists/{id}`
    - **Delete List**: `DELETE /api/lists/{id}`
 
 4. **Manage Tasks**
 
    - **Create Task**: `POST /api/tasks`
-   - **List Tasks for a List**: `GET /api/lists/{listId}/tasks`
+   - **List Tasks for a List**: `GET /api/tasks/lists/{listId}`
    - **Move Task**: `PATCH /api/tasks/{id}/move`
    - **Update Task**: `PUT /api/tasks/{id}`
    - **Delete Task**: `DELETE /api/tasks/{id}`
@@ -68,7 +68,7 @@ A Symfony-based API for creating and managing a Kanban system. This API lets you
 | Method | Endpoint                    | Description                |
 | ------ | --------------------------- | -------------------------- |
 | POST   | /api/lists                  | Create a new list          |
-| GET    | /api/boards/{boardId}/lists | List all lists for a board |
+| GET    | /api/lists/boards/{boardId} | List all lists for a board |
 | PUT    | /api/lists/{id}             | Update a list              |
 | DELETE | /api/lists/{id}             | Delete a list              |
 
@@ -77,7 +77,7 @@ A Symfony-based API for creating and managing a Kanban system. This API lets you
 | Method | Endpoint                  | Description                     |
 | ------ | ------------------------- | ------------------------------- |
 | POST   | /api/tasks                | Create a new task               |
-| GET    | /api/lists/{listId}/tasks | List tasks for a given list     |
+| GET    | /api/tasks/lists/{listId} | List tasks for a given list     |
 | PATCH  | /api/tasks/{id}/move      | Move a task to a different list |
 | PUT    | /api/tasks/{id}           | Update task details             |
 | DELETE | /api/tasks/{id}           | Delete a task                   |
@@ -104,7 +104,7 @@ erDiagram
       datetime created_at
       datetime updated_at
     }
-    KANBAN_LISTS {
+    LISTS {
       string id
       string board_id
       string title
@@ -124,9 +124,9 @@ erDiagram
       datetime updated_at
     }
 
-    USERS ||--o{ BOARDS : "owns"
-    BOARDS ||--|{ KANBAN_LISTS : "has"
-    KANBAN_LISTS ||--|{ TASKS : "contains"
+    USERS }|--o{ BOARDS : "owns"
+    BOARDS }|--|{ LISTS : "has"
+    LISTS }|--|{ TASKS : "contains"
 ```
 
 ## Key Entities 🔑
