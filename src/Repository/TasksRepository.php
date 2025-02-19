@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Tasks;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Tasks>
@@ -14,6 +14,15 @@ class TasksRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tasks::class);
+    }
+
+    public function getTasksByListId($listId)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.list = :listId')
+            ->setParameter('listId', $listId)
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
