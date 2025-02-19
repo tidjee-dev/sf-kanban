@@ -463,15 +463,24 @@ function initializeDatabase(): void
 function resetDatabase(): void
 {
     io()->title('Resetting Database');
-    run('symfony console doctrine:database:drop --force --if-exists');
-    run('symfony console doctrine:database:create --if-not-exists');
-    run('symfony console doctrine:migrations:migrate');
-    $fixtures = io()->ask('Would you like to load fixtures?', 'y');
-    if ($fixtures === 'y') {
-        loadFixtures();
+    $confirm = io()->confirm('Are you sure you want to reset the database? This will drop and recreate the database.', false);
+    if ($confirm) {
+        if (fs()->exists('migrations')) {
+            run('rm -Rf migrations/*');
+        };
+        run('symfony console doctrine:database:drop --force');
+        run('symfony console doctrine:database:create');
+        run('symfony console make:migration');
+        run('symfony console doctrine:migrations:migrate --no-interaction');
+        $fixtures = io()->ask('Would you like to load fixtures?', 'y');
+        if ($fixtures === 'y') {
+            loadFixtures();
+        }
+        io()->newLine();
+        io()->success('Database reset');
+    } else {
+        io()->warning('Database not reset');
     }
-    io()->newLine();
-    io()->success('Database reset');
 }
 
 /**
@@ -512,4 +521,6 @@ function loadFixtures(): void
 {
     io()->title('Loading Fixtures');
     run('symfony console doctrine:fixtures:load --no-interaction');
+    io()->newLine();
+    io()->success('Fixtures loaded');
 }

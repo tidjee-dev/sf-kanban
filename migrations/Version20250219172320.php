@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250218195741 extends AbstractMigration
+final class Version20250219172320 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,11 +24,11 @@ final class Version20250218195741 extends AbstractMigration
         , updated_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , PRIMARY KEY(id), CONSTRAINT FK_F3EE4D137E3C61F9 FOREIGN KEY (owner_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_F3EE4D137E3C61F9 ON boards (owner_id)');
-        $this->addSql('CREATE TABLE lists (id VARCHAR(22) NOT NULL, board_id VARCHAR(22) NOT NULL, title VARCHAR(255) NOT NULL, position INTEGER NOT NULL, is_completed BOOLEAN NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
+        $this->addSql('CREATE TABLE lists (id VARCHAR(22) NOT NULL, board_id VARCHAR(22) NOT NULL, title VARCHAR(255) NOT NULL, position INTEGER DEFAULT NULL, is_completed BOOLEAN NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , updated_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , PRIMARY KEY(id), CONSTRAINT FK_8269FA5E7EC5785 FOREIGN KEY (board_id) REFERENCES boards (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8269FA5E7EC5785 ON lists (board_id)');
-        $this->addSql('CREATE TABLE tasks (id VARCHAR(22) NOT NULL, list_id VARCHAR(22) NOT NULL, title VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, position INTEGER NOT NULL, is_completed BOOLEAN NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
+        $this->addSql('CREATE TABLE tasks (id VARCHAR(22) NOT NULL, list_id VARCHAR(22) NOT NULL, title VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, position INTEGER DEFAULT NULL, is_completed BOOLEAN NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , updated_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , PRIMARY KEY(id), CONSTRAINT FK_505865973DAE168B FOREIGN KEY (list_id) REFERENCES lists (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_505865973DAE168B ON tasks (list_id)');

@@ -29,14 +29,14 @@ A Symfony-based API for creating and managing a Kanban system. This API lets you
 3. **Manage Lists (Columns)**
 
    - **Create List**: `POST /api/lists`
-   - **List Lists for a Board**: `GET /api/lists/boards/{boardId}`
+   - **List Lists for a Board**: `GET /api/lists/board/{boardId}`
    - **Update List**: `PUT /api/lists/{id}`
    - **Delete List**: `DELETE /api/lists/{id}`
 
 4. **Manage Tasks**
 
    - **Create Task**: `POST /api/tasks`
-   - **List Tasks for a List**: `GET /api/tasks/lists/{listId}`
+   - **List Tasks for a List**: `GET /api/tasks/list/{listId}`
    - **Move Task**: `PATCH /api/tasks/{id}/move`
    - **Update Task**: `PUT /api/tasks/{id}`
    - **Delete Task**: `DELETE /api/tasks/{id}`
@@ -65,22 +65,22 @@ A Symfony-based API for creating and managing a Kanban system. This API lets you
 
 ### `Lists` 📝
 
-| Method | Endpoint                    | Description                |
-| ------ | --------------------------- | -------------------------- |
-| POST   | /api/lists                  | Create a new list          |
-| GET    | /api/lists/boards/{boardId} | List all lists for a board |
-| PUT    | /api/lists/{id}             | Update a list              |
-| DELETE | /api/lists/{id}             | Delete a list              |
+| Method | Endpoint                   | Description                |
+| ------ | -------------------------- | -------------------------- |
+| POST   | /api/lists                 | Create a new list          |
+| GET    | /api/lists/board/{boardId} | List all lists for a board |
+| PUT    | /api/lists/{id}            | Update a list              |
+| DELETE | /api/lists/{id}            | Delete a list              |
 
 ### `Tasks` ✅
 
-| Method | Endpoint                  | Description                     |
-| ------ | ------------------------- | ------------------------------- |
-| POST   | /api/tasks                | Create a new task               |
-| GET    | /api/tasks/lists/{listId} | List tasks for a given list     |
-| PATCH  | /api/tasks/{id}/move      | Move a task to a different list |
-| PUT    | /api/tasks/{id}           | Update task details             |
-| DELETE | /api/tasks/{id}           | Delete a task                   |
+| Method | Endpoint                 | Description                     |
+| ------ | ------------------------ | ------------------------------- |
+| POST   | /api/tasks               | Create a new task               |
+| GET    | /api/tasks/list/{listId} | List tasks for a given list     |
+| PATCH  | /api/tasks/{id}/move     | Move a task to a different list |
+| PUT    | /api/tasks/{id}          | Update task details             |
+| DELETE | /api/tasks/{id}          | Delete a task                   |
 
 ## Data Model 🗺
 
